@@ -1,4 +1,4 @@
-package com.example.ricgonmen.servereureka;
+package com.example.ricgonmen.servidor_directorio_eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @EnableEurekaServer
 @SpringBootApplication
-public class ServerEurekaApplication {
+public class ServidorDirectorioEurekaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ServerEurekaApplication.class, args);
+		SpringApplication.run(ServidorDirectorioEurekaApplication.class, args);
 	}
 
 }

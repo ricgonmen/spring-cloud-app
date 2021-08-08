@@ -9,7 +9,7 @@
  * the Service Discovery 
  */
 
-package com.ricgonmen.ms.rest;
+package com.ricgonmen.ms_user.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +19,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-public class MsProductoApplication {
+public class MsUserApplication {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(MsProductoApplication.class, args);
+		SpringApplication.run(MsUserApplication.class, args);
 	}
 
 }

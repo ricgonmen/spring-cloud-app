@@ -1,10 +1,10 @@
-package com.example.ricgonmen.cliente_balanceado_eureka;
+package com.example.ricgonmen.descubrimientoeureka;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ClienteBalanceadoEurekaApplicationTests {
+class DescubrimientoEurekaApplicationTests {
 
 	@Test
 	void contextLoads() {

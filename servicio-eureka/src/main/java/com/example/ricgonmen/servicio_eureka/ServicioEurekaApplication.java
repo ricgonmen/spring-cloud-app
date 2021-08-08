@@ -9,7 +9,7 @@
  * the Service Discovery 
  */
 
-package com.example.ricgonmen.servicioeureka;
+package com.example.ricgonmen.servicio_eureka;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -28,12 +28,15 @@ public class ServicioEurekaApplication {
 	@Value("${eureka.instance.instance-id}")
 	private String instancia;
 
+	@Value("${server.port}")
+	private int puerto;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ServicioEurekaApplication.class, args);
 	}
 
 	@RequestMapping("/")
 	public String mensaje() {
-		return "Un saludo desde la instancia " + instancia;
+		return "Un saludo desde la instancia " + instancia + " en el puerto " + puerto;
 	}
 }

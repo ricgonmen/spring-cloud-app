@@ -1,4 +1,4 @@
-package com.ricgonmen.ms_user.rest.controller;
+package com.ricgonmen.ms_user.rest;
 
 import java.util.List;
 
@@ -15,14 +15,14 @@ import com.ricgonmen.modelo.User;
 import com.ricgonmen.modelo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class MsUserController {
-    @Autowired
-	private final UserRepository usuarioRepositorio;
+
+	private final UserRepository usuarioRepositorio = null;
 
 	/**
 	 * Obtenemos todos los usuarios

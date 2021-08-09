@@ -9,7 +9,7 @@
  * the Service Discovery 
  */
 
-package com.ricgonmen.ms_user.rest;
+package com.ricgonmen.ms_user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

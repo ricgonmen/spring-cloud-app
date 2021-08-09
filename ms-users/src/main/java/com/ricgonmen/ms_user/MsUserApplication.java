@@ -1,12 +1,21 @@
 /*
- * Remember that we're diving into each of the components of service discovery, and the next 
- * on our list is the application service. This is whatever is providing the functionality. 
- * It's the thing that's receiving the requests from clients and returning responses. And it's 
- * a dependency of other services. So other services depend on its functionality to perform 
- * their functionality. You would typically run one or more instances of the application service. 
- * The application service is a user of the discovery client. It's going to use that client to 
- * call out to the Discovery Server and register and deregister itself. Just like we did for 
- * the Service Discovery 
+ * 
+ 	The application will provide the following JSON web services:
+	/api/user/ (GET): return the list of all users.
+	/api/user/{username}/ (GET): return a single user.
+	/api/user/ (POST): create a user.
+	/api/user/{username}/ (PUT): update the information of a single user.
+	/api/user/{username}/ (DELETE): delete a single user.
+	/api/user/generate/{number}/ (GET): generate a number, provided as a parameter, of random users.
+		To create the users you have to use the Random User Generator service. Users
+		will be added to the collection of existing users.
+
+Extra optional features (only if you are done with the previous features):
+
+	- Unit tests (at least one class).
+	- Pagination of the users list.
+	- API documentation using Swagger, Spring REST docs or any other tool.
+	
  */
 
 package com.ricgonmen.ms_user;

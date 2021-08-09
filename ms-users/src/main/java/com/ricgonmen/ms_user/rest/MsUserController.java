@@ -1,6 +1,22 @@
+/*
+ * 
+ 	The application will provide the following JSON web services:
+	/api/user/ (GET): return the list of all users.
+	/api/user/{username}/ (GET): return a single user.
+	/api/user/ (POST): create a user.
+	/api/user/{username}/ (PUT): update the information of a single user.
+	/api/user/{username}/ (DELETE): delete a single user.
+	/api/user/generate/{number}/ (GET): generate a number, provided as a parameter, of random users.
+		To create the users you have to use the Random User Generator service. Users
+		will be added to the collection of existing users.
+	
+ */
+
+
 package com.ricgonmen.ms_user.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,70 +40,90 @@ public class MsUserController {
 
 	/**
 	 * Obtenemos todos los usuarios
-	 * 
+	 * /api/user/ (GET): return the list of all users.
 	 * @return
 	 */
-	@GetMapping("/usuario")
+	@GetMapping("/user")
 	public List<User> obtenerTodos() {
 		log.info("*** Recuperando todos los usuarios");
 		return usuarioRepositorio.findAll();
 	}
 
 	/**
-	 * Obtenemos un usuario en base a su ID
-	 * 
-	 * @param id
+	 * Obtenemos un usuario en base a su username
+	 * /api/user/{username}/ (GET): return a single user.
+	 * @param username
 	 * @return Null si no encuentra el usuario
 	 */
-	@GetMapping("/usuario/{id}")
-	public User obtenerUno(@PathVariable Long id) {
-		log.info("*** Recuperando el usuario id=" + id);
-		return usuarioRepositorio.findById(id).orElse(null);
+	@GetMapping("/user/{username}")
+	public User obtenerUnoPorUsername(@PathVariable String username) {
+		log.info("*** Recuperando el usuario username=" + username);
+		return usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 	}
 
 	/**
 	 * Insertamos un nuevo usuario
-	 * 
+	 * /api/user/ (POST): create a user.
 	 * @param nuevo
 	 * @return usuario insertado
 	 */
-	@PostMapping("/usuario")
+	@PostMapping("/user")
 	public User nuevousuario(@RequestBody User nuevo) {
 		log.info("*** Añadiendo el usuario " + nuevo.toString());
 		return usuarioRepositorio.save(nuevo);
 	}
-
+	
 	/**
-	 * 
+	 * /api/user/{username}/ (PUT): update the information of a single user.
 	 * @param editar
-	 * @param id
+	 * @param username
 	 * @return
 	 */
-	@PutMapping("/usuario/{id}")
-	public User editarusuario(@RequestBody User editar, @PathVariable Long id) {
-		log.info("*** Editando el usuario '" +editar.toString() + "' con id " + id);
-		if (usuarioRepositorio.existsById(id)) {
-			editar.setId(id);
+	@PutMapping("/user/{username}")
+	public User editarusuarioPorUsername(@RequestBody User editar, @PathVariable String username) {
+		log.info("*** Editando el usuario '" +editar.toString() + "' con username " + username);
+		
+		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+
+		if (user != null) {
+			editar.setId(user.getId());
 			return usuarioRepositorio.save(editar);
 		} else {
 			return null;
 		}
 	}
 
+	
 	/**
-	 * Borra un usuario del catálogo en base a su id
+	 * Borra un usuario del catálogo en base a su username
+	 * /api/user/{username}/ (DELETE): delete a single user.
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping("/usuario/{id}")
-	public User borrarusuario(@PathVariable Long id) {
-		log.info("*** Recuperando el usuario id=" + id);
-		if (usuarioRepositorio.existsById(id)) {
-			User result = usuarioRepositorio.findById(id).get();
-			usuarioRepositorio.deleteById(id);
-			return result;
+	@DeleteMapping("/user/{username}")
+	public User borrarusuarioPorUsername(@PathVariable String username) {
+		log.info("*** Borrando el usuario username=" + username);
+		
+		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+
+		if (user != null) {
+			usuarioRepositorio.deleteById(user.getId());
+			return user;
 		} else
 			return null;
 	}
 
+	/**
+	 * /api/user/generate/{number}/ (GET): generate a number, provided as a parameter, of random users.
+	To create the users you have to use the Random User Generator service. Users
+	will be added to the collection of existing users.
+	 * @param username
+	 * @return Null si no encuentra el usuario
+	 */
+	@GetMapping("/user/generate/{number}")
+	public List<User> generarUsuariosRandom(@PathVariable Long number) {
+		log.info("*** Creando " + number + " usuarios aleatorios.");
+		// return usuarioRepositorio.findById(username).orElse(null);
+		return null;
+	}
 }

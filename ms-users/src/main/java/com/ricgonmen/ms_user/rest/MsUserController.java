@@ -15,16 +15,25 @@
 
 package com.ricgonmen.ms_user.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,36 +50,55 @@ public class MsUserController {
 	/**
 	 * Obtenemos todos los usuarios
 	 * /api/user/ (GET): return the list of all users.
-	 * @return
+	 * @return 404 si no hay usuarios, 200 y lista de usuarios si hay uno o máss
 	 */
 	@GetMapping("/user")
-	public List<User> obtenerTodos() {
+	public ResponseEntity<?> obtenerTodos() {
 		log.info("*** Recuperando todos los usuarios");
-		return usuarioRepositorio.findAll();
+		
+		List<User> result = usuarioRepositorio.findAll();
+
+		if (result.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		} else {
+			return ResponseEntity.ok(result);
+		}
+		
 	}
 
 	/**
 	 * Obtenemos un usuario en base a su username
 	 * /api/user/{username}/ (GET): return a single user.
 	 * @param username
-	 * @return Null si no encuentra el usuario
+	 * @return 404 si no encuentra el usuario, 200 y el usuario si lo encuentra
 	 */
 	@GetMapping("/user/{username}")
-	public User obtenerUnoPorUsername(@PathVariable String username) {
+	public ResponseEntity<?> obtenerUnoPorUsername(@PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
-		return usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		User result = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		if (result == null)
+			return ResponseEntity.notFound().build();
+		else
+			return ResponseEntity.ok(result);
 	}
 
 	/**
 	 * Insertamos un nuevo usuario
 	 * /api/user/ (POST): create a user.
 	 * @param nuevo
-	 * @return usuario insertado
+	 * @return 201 y el producto insertado
+	 * TODO: ¿Excepción en saved?
 	 */
 	@PostMapping("/user")
-	public User nuevousuario(@RequestBody User nuevo) {
+	public ResponseEntity<?> nuevousuario(@RequestBody User nuevo) {
 		log.info("*** Añadiendo el usuario " + nuevo.toString());
-		return usuarioRepositorio.save(nuevo);
+		
+		User usuario = usuarioRepositorio.save(nuevo);
+		
+		if (usuario!=null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+		else
+			return ResponseEntity.badRequest().body(null);
 	}
 	
 	/**

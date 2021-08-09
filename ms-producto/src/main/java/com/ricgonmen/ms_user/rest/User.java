@@ -1,4 +1,4 @@
-package com.ricgonmen.modelo;
+package com.ricgonmen.ms_user.rest;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,8 +6,9 @@ import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor
 @Entity
 public class User {
 

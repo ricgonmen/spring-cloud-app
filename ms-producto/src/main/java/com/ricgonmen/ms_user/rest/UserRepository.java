@@ -1,4 +1,4 @@
-package com.ricgonmen.modelo;
+package com.ricgonmen.ms_user.rest;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

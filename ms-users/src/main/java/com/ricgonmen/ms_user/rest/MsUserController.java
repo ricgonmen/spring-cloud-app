@@ -12,6 +12,9 @@
 	
  */
 
+// Mirar en https://github.com/javaquery/spring-boot-examples
+// https://github.com/OpenWebinarsNet/spring-rest-apis
+
 
 package com.ricgonmen.ms_user.rest;
 
@@ -119,6 +122,19 @@ public class MsUserController {
 		} else {
 			return null;
 		}
+		
+		/*
+		 * Alternativa
+		 * 
+		 * 
+		 * return productoRepositorio.findById(id).map(p -> {
+			p.setNombre(editar.getNombre());
+			p.setPrecio(editar.getPrecio());
+			return ResponseEntity.ok(productoRepositorio.save(p));
+		}).orElseGet(() -> {
+			return ResponseEntity.notFound().build();
+		});
+		 */
 	}
 
 	
@@ -129,16 +145,16 @@ public class MsUserController {
 	 * @return
 	 */
 	@DeleteMapping("/user/{username}")
-	public User borrarusuarioPorUsername(@PathVariable String username) {
+	public ResponseEntity<?> borrarusuarioPorUsername(@PathVariable String username) {
 		log.info("*** Borrando el usuario username=" + username);
 		
 		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
 		if (user != null) {
 			usuarioRepositorio.deleteById(user.getId());
-			return user;
+			return ResponseEntity.noContent().build();
 		} else
-			return null;
+			return ResponseEntity.badRequest().body(null);
 	}
 
 	/**

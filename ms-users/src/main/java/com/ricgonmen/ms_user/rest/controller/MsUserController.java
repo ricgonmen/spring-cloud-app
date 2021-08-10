@@ -165,7 +165,7 @@ public class MsUserController {
 
 		if (user != null) {
 			usuarioRepositorio.deleteById(user.getId());
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.ok().build();
 		} else
 			return ResponseEntity.badRequest().body(null);
 	}
@@ -184,13 +184,13 @@ public class MsUserController {
 			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
 	})
 	@GetMapping("/user/generate/{number}")
-	public ResponseEntity<?> generarUsuariosRandom(@ApiParam(value="Number of users to generate", required=true, type = "int") @PathVariable Long numberUsersToCreate) {
-		log.info("*** Creando " + numberUsersToCreate + " usuarios aleatorios.");
+	public ResponseEntity<?> generarUsuariosRandom(@ApiParam(value="Number of users to generate", required=true, type = "Long") @PathVariable Long number) {
+		log.info("*** Creando " + number + " usuarios aleatorios.");
 	
-		List<User> result = new ArrayList<User>();
+		List<User> result = new ArrayList<>();
 		
-		for (int i=0;i<numberUsersToCreate;i++) {
-			User randomUser = new User(new CreateUserDTO(true));
+		for (int i=0;i<number;i++) {
+			User randomUser = usuarioDTOConverter.convertToEntity(CreateUserDTO.createRamdom());
 			result.add(randomUser);
 			usuarioRepositorio.save(randomUser);
 		}

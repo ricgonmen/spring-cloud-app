@@ -11,11 +11,8 @@ not. Usage of a memory database or one integrated in the app itself is advised f
 
 package com.ricgonmen.ms_user.rest.dto;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+
+import org.springframework.web.client.RestTemplate;
 
 import com.ricgonmen.ms_user.rest.model.User;
 
@@ -24,35 +21,15 @@ import lombok.Setter;
 
 @Getter @Setter
 public class CreateUserDTO {
-	// TODO: Generar desde https://www.mockaroo.com/?
-	
-	private String randomString() {
-	    int leftLimit = 97; // letter 'a'
-	    int rightLimit = 122; // letter 'z'
-	    int targetStringLength = 10;
-	    Random random = new Random();
 
-	    String generatedString = random.ints(leftLimit, rightLimit + 1)
-	      .limit(targetStringLength)
-	      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-	      .toString();
-
-	    return generatedString;
+	public static UserDTO createRamdom() {
+		RestTemplate restTemplate = new RestTemplate();
+		RamdomUserDTO result = restTemplate.getForObject(
+				"https://randomapi.com/api/198b72ae540f6e93e8e9e61949bd1fee"
+				, RamdomUserDTO.class);
+		
+		return result.getResults().iterator().next();
 	}
-
-	public CreateUserDTO(boolean random) {
-		super();
-		if (random) {
-			this.username = randomString();
-			this.name = randomString();
-			this.email = randomString();
-			this.picture = randomString();
-			
-			User.Gender[] genders = User.Gender.values();
-			this.gender = genders[ThreadLocalRandom.current().nextInt(0, genders.length)];
-		}
-	}
-
 
 	private String username;
 	

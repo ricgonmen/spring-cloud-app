@@ -7,7 +7,11 @@ Gender
 Picture (only URL value)
 
 Users will be persisted to a database. You can use any database of your preference, relational or
-not. Usage of a memory database or one integrated in the app itself is advised for simplicity.*/
+not. Usage of a memory database or one integrated in the app itself is advised for simplicity.
+
+https://randomapi.com/api/baxwustz?key=NF82-NELB-0LA0-0CBM
+
+*/
 
 package com.ricgonmen.ms_user.rest.model;
 

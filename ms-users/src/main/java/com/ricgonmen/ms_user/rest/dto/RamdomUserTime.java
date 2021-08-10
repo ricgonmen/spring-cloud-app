@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class UserDTO extends CreateUserDTO {
-	private Long id;
-		
+public class RamdomUserTime {
+    public int instruct;
+    public int generate;
 }

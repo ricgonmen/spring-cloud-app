@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<ApiError> handleProductoNoEncontrado(UserNotFoundException ex) {
+	public ResponseEntity<ApiError> handleUserNotFound(UserNotFoundException ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
 	}

@@ -62,7 +62,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
 			        .map(constraintViolation -> String.format("%s value '%s' %s", constraintViolation.getPropertyPath(),
 			                constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
 			        .collect(Collectors.toList()));
-			ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, messages.toString());
+			ApiError apiError = new ApiError(HttpStatus.UNPROCESSABLE_ENTITY, messages.toString());
 			return ResponseEntity.badRequest().body(apiError);
 		} catch (Exception e) {
 			ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());

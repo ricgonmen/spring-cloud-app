@@ -35,11 +35,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
 import com.ricgonmen.ms_user.rest.dto.UserDTO;
 import com.ricgonmen.ms_user.rest.dto.converter.UserDTOConverter;
+import com.ricgonmen.ms_user.rest.excepcion.ApiError;
 import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
 import com.ricgonmen.ms_user.rest.model.User;
 import com.ricgonmen.ms_user.rest.model.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,11 +55,15 @@ public class MsUserController {
 	private final UserDTOConverter usuarioDTOConverter;
 	
 	/**
-	 * Obtenemos todos los usuarios
 	 * /api/user/ (GET): return the list of all users.
 	 * @return 404 si no hay usuarios, 200 y lista de usuarios si hay uno o máss
 	 */
 	@ApiOperation(value="Return the list of all users", notes="")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="OK", response=UserDTO.class),
+			@ApiResponse(code=404, message="Not Found", response=ApiError.class),
+			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
+	})
 	@GetMapping("/user")
 	public ResponseEntity<?> obtenerTodos() {
 		log.info("*** Recuperando todos los usuarios");
@@ -74,28 +82,36 @@ public class MsUserController {
 	}
 
 	/**
-	 * Obtenemos un usuario en base a su username
 	 * /api/user/{username}/ (GET): return a single user.
 	 * @param username
 	 * @return 404 si no encuentra el usuario, 200 y el usuario si lo encuentra
 	 */
 	@ApiOperation(value="Return a single user", notes="")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="OK", response=UserDTO.class),
+			@ApiResponse(code=404, message="Not Found", response=ApiError.class),
+			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
+	})
 	@GetMapping("/user/{username}")
-	public UserDTO obtenerUnoPorUsername(@PathVariable String username) {
+	public UserDTO obtenerUnoPorUsername(@ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
 		return usuarioDTOConverter.convertToDto(usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
 	}
 
 	/**
-	 * Insertamos un nuevo usuario
 	 * /api/user/ (POST): create a user.
 	 * @param nuevo
 	 * @return 201 y el producto insertado
 	 * TODO: ¿Excepción en saved?
 	 */
 	@ApiOperation(value="Create a user", notes="")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="OK", response=UserDTO.class),
+			@ApiResponse(code=422, message="Unprocessable Entity", response=ApiError.class),
+			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
+	})
 	@PostMapping("/user")
-	public ResponseEntity<?> nuevousuario(@RequestBody CreateUserDTO newUser) {
+	public ResponseEntity<?> nuevousuario(@ApiParam(value="User JSON", required=true, type = "application/json")  @RequestBody CreateUserDTO newUser) {
 		log.info("*** Añadiendo el usuario " + newUser.toString());
 				
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepositorio.save(new User(newUser)));
@@ -108,15 +124,20 @@ public class MsUserController {
 	 * @return
 	 */
 	@ApiOperation(value="Update the information of a single user", notes="")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="OK", response=UserDTO.class),
+			@ApiResponse(code=404, message="Not Found", response=ApiError.class),
+			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
+	})
 	@PutMapping("/user/{username}")
-	public User editarusuarioPorUsername(@RequestBody User currentUser, @PathVariable String username) {
+	public User editarusuarioPorUsername(@RequestBody UserDTO currentUser, @ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
 		log.info("*** Editando el usuario '" +currentUser.toString() + "' con username " + username);
 		
 		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
 		if (user != null) {
 			currentUser.setId(user.getId());
-			return usuarioRepositorio.save(currentUser);
+			return usuarioRepositorio.save(usuarioDTOConverter.convertToEntity(currentUser));
 		} else {
 			return null;
 		}
@@ -131,8 +152,13 @@ public class MsUserController {
 	 * @return
 	 */
 	@ApiOperation(value="Delete a single user", notes="")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="OK", response=UserDTO.class),
+			@ApiResponse(code=404, message="Not Found", response=ApiError.class),
+			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
+	})
 	@DeleteMapping("/user/{username}")	
-	public ResponseEntity<?> borrarusuarioPorUsername(@PathVariable String username) {
+	public ResponseEntity<?> borrarusuarioPorUsername(@ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
 		log.info("*** Borrando el usuario username=" + username);
 		
 		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
@@ -151,10 +177,14 @@ public class MsUserController {
 	 * @param username
 	 * @return 200 y lista de n usuarios generados
 	 */
-	@ApiOperation(value="Generate a number, provided as a parameter, of random users", notes="To create the users you have to use the Random User Generator service. Users\r\n"
+	@ApiOperation(value="Generate a number, provided as a parameter, of random users", notes="Users\r\n"
 			+ "	will be added to the collection of existing users.")
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="OK", response=UserDTO.class),
+			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
+	})
 	@GetMapping("/user/generate/{number}")
-	public ResponseEntity<?> generarUsuariosRandom(@PathVariable Long numberUsersToCreate) {
+	public ResponseEntity<?> generarUsuariosRandom(@ApiParam(value="Number of users to generate", required=true, type = "int") @PathVariable Long numberUsersToCreate) {
 		log.info("*** Creando " + numberUsersToCreate + " usuarios aleatorios.");
 	
 		List<User> result = new ArrayList<User>();

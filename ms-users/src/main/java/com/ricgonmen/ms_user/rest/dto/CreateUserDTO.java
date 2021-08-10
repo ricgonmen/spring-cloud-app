@@ -24,6 +24,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class CreateUserDTO {
+	// TODO: Generar desde https://www.mockaroo.com/?
 	
 	private String randomString() {
 	    int leftLimit = 97; // letter 'a'

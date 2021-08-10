@@ -1,9 +1,7 @@
 package com.ricgonmen.ms_user.rest.excepcion;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,15 +25,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice()
-public class RestExceptionHandler extends ResponseEntityExceptionHandler{
-	/*
+public class GlobalControllerAdvice extends ResponseEntityExceptionHandler{
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiError> handleProductoNoEncontrado(UserNotFoundException ex) {
+		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		ApiError  apiError = new ApiError(status, ex.getMessage());
+		return ResponseEntity.status(status).headers(headers).body(apiError);
+	}
+	
 	@Override
 	protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers,
 	    HttpStatus status, WebRequest request) {
-		String error = ex.getParameterName() + " parameter is missing.";
-		return new ResponseEntity<Object>(new ErrorResponse<>(Arrays.asList(error)), HttpStatus.BAD_REQUEST);
+		ApiError  apiError = new ApiError(status, ex.getParameterName() + " parameter is missing.");
+		return ResponseEntity.status(status).headers(headers).body(apiError);
 	}
-	*/
 	
 	/**
 	 * Exception thrown when constrain is violanted (username = null).
@@ -52,9 +62,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 			        .map(constraintViolation -> String.format("%s value '%s' %s", constraintViolation.getPropertyPath(),
 			                constraintViolation.getInvalidValue(), constraintViolation.getMessage()))
 			        .collect(Collectors.toList()));
-			return ResponseEntity.badRequest().body(messages);
+			ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, messages.toString());
+			return ResponseEntity.badRequest().body(apiError);
 		} catch (Exception e) {
-			return ResponseEntity.internalServerError().body(Arrays.asList(ex.getMessage()));		}
+			ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
+			return ResponseEntity.internalServerError().body(apiError);		
+		}
 	}
 	
 	/**
@@ -66,9 +79,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	protected ResponseEntity<?> handleConstraintViolationException(DataIntegrityViolationException ex, HttpServletRequest request) {
 		try {
-			return ResponseEntity.badRequest().body(ex.getCause().getCause().getLocalizedMessage());
+			ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getCause().getCause().getLocalizedMessage());
+			return ResponseEntity.badRequest().body(apiError);
 		} catch (Exception e) {
-			return ResponseEntity.internalServerError().body(Arrays.asList(ex.getMessage()));
+			ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage());
+			return ResponseEntity.internalServerError().body(apiError);
 		}
 	}
 	

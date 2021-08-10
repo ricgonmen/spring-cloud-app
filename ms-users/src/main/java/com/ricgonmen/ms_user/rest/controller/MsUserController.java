@@ -78,15 +78,9 @@ public class MsUserController {
 	 * @return 404 si no encuentra el usuario, 200 y el usuario si lo encuentra
 	 */
 	@GetMapping("/user/{username}")
-	public ResponseEntity<?> obtenerUnoPorUsername(@PathVariable String username) {
+	public UserDTO obtenerUnoPorUsername(@PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
-		User result = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
-		if (result == null) {
-			log.error("*** ERROR Recuperando el usuario username=" + username);
-			return ResponseEntity.notFound().build();
-		}
-		else
-			return ResponseEntity.ok(result);
+		return usuarioDTOConverter.convertToDto(usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
 	}
 
 	/**

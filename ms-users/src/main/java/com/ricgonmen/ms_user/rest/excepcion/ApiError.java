@@ -26,10 +26,4 @@ public class ApiError {
 	@NonNull
 	private String mensaje;
 	
-	public ApiError(@NonNull HttpStatus estado, @NonNull String mensaje) {
-		super();
-		this.estado = estado;
-		this.mensaje = mensaje;
-	}
-	
 }

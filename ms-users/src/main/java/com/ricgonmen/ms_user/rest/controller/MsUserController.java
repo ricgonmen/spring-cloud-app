@@ -39,6 +39,7 @@ import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
 import com.ricgonmen.ms_user.rest.model.User;
 import com.ricgonmen.ms_user.rest.model.UserRepository;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +55,7 @@ public class MsUserController {
 	 * /api/user/ (GET): return the list of all users.
 	 * @return 404 si no hay usuarios, 200 y lista de usuarios si hay uno o máss
 	 */
+	@ApiOperation(value="Return the list of all users", notes="")
 	@GetMapping("/user")
 	public ResponseEntity<?> obtenerTodos() {
 		log.info("*** Recuperando todos los usuarios");
@@ -77,6 +79,7 @@ public class MsUserController {
 	 * @param username
 	 * @return 404 si no encuentra el usuario, 200 y el usuario si lo encuentra
 	 */
+	@ApiOperation(value="Return a single user", notes="")
 	@GetMapping("/user/{username}")
 	public UserDTO obtenerUnoPorUsername(@PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
@@ -90,11 +93,12 @@ public class MsUserController {
 	 * @return 201 y el producto insertado
 	 * TODO: ¿Excepción en saved?
 	 */
+	@ApiOperation(value="Create a user", notes="")
 	@PostMapping("/user")
-	public ResponseEntity<?> nuevousuario(@RequestBody CreateUserDTO nuevo) {
-		log.info("*** Añadiendo el usuario " + nuevo.toString());
+	public ResponseEntity<?> nuevousuario(@RequestBody CreateUserDTO newUser) {
+		log.info("*** Añadiendo el usuario " + newUser.toString());
 				
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepositorio.save(new User(nuevo)));
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepositorio.save(new User(newUser)));
 	}
 	
 	/**
@@ -103,31 +107,20 @@ public class MsUserController {
 	 * @param username
 	 * @return
 	 */
+	@ApiOperation(value="Update the information of a single user", notes="")
 	@PutMapping("/user/{username}")
-	public User editarusuarioPorUsername(@RequestBody User editar, @PathVariable String username) {
-		log.info("*** Editando el usuario '" +editar.toString() + "' con username " + username);
+	public User editarusuarioPorUsername(@RequestBody User currentUser, @PathVariable String username) {
+		log.info("*** Editando el usuario '" +currentUser.toString() + "' con username " + username);
 		
 		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
 		if (user != null) {
-			editar.setId(user.getId());
-			return usuarioRepositorio.save(editar);
+			currentUser.setId(user.getId());
+			return usuarioRepositorio.save(currentUser);
 		} else {
 			return null;
 		}
 		
-		/*
-		 * Alternativa
-		 * 
-		 * 
-		 * return productoRepositorio.findById(id).map(p -> {
-			p.setNombre(editar.getNombre());
-			p.setPrecio(editar.getPrecio());
-			return ResponseEntity.ok(productoRepositorio.save(p));
-		}).orElseGet(() -> {
-			return ResponseEntity.notFound().build();
-		});
-		 */
 	}
 
 	
@@ -137,7 +130,8 @@ public class MsUserController {
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping("/user/{username}")
+	@ApiOperation(value="Delete a single user", notes="")
+	@DeleteMapping("/user/{username}")	
 	public ResponseEntity<?> borrarusuarioPorUsername(@PathVariable String username) {
 		log.info("*** Borrando el usuario username=" + username);
 		
@@ -157,14 +151,15 @@ public class MsUserController {
 	 * @param username
 	 * @return 200 y lista de n usuarios generados
 	 */
+	@ApiOperation(value="Generate a number, provided as a parameter, of random users", notes="To create the users you have to use the Random User Generator service. Users\r\n"
+			+ "	will be added to the collection of existing users.")
 	@GetMapping("/user/generate/{number}")
-	public ResponseEntity<?> generarUsuariosRandom(@PathVariable Long number) {
-		log.info("*** Creando " + number + " usuarios aleatorios.");
-		// return usuarioRepositorio.findById(username).orElse(null);
-		
+	public ResponseEntity<?> generarUsuariosRandom(@PathVariable Long numberUsersToCreate) {
+		log.info("*** Creando " + numberUsersToCreate + " usuarios aleatorios.");
+	
 		List<User> result = new ArrayList<User>();
 		
-		for (int i=0;i<number;i++) {
+		for (int i=0;i<numberUsersToCreate;i++) {
 			User randomUser = new User(new CreateUserDTO(true));
 			result.add(randomUser);
 			usuarioRepositorio.save(randomUser);

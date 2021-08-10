@@ -19,24 +19,17 @@
 package com.ricgonmen.ms_user.rest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -162,12 +155,21 @@ public class MsUserController {
 	To create the users you have to use the Random User Generator service. Users
 	will be added to the collection of existing users.
 	 * @param username
-	 * @return Null si no encuentra el usuario
+	 * @return 200 y lista de n usuarios generados
 	 */
 	@GetMapping("/user/generate/{number}")
-	public List<User> generarUsuariosRandom(@PathVariable Long number) {
+	public ResponseEntity<?> generarUsuariosRandom(@PathVariable Long number) {
 		log.info("*** Creando " + number + " usuarios aleatorios.");
 		// return usuarioRepositorio.findById(username).orElse(null);
-		return null;
+		
+		List<User> result = new ArrayList<User>();
+		
+		for (int i=0;i<number;i++) {
+			User randomUser = new User(true);
+			result.add(randomUser);
+			usuarioRepositorio.save(randomUser);
+		}
+		
+		return ResponseEntity.ok(result);
 	}
 }

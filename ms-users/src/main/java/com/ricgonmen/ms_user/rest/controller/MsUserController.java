@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
 import com.ricgonmen.ms_user.rest.dto.UserDTO;
 import com.ricgonmen.ms_user.rest.dto.converter.UserDTOConverter;
 import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
@@ -80,8 +81,10 @@ public class MsUserController {
 	public ResponseEntity<?> obtenerUnoPorUsername(@PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
 		User result = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
-		if (result == null)
+		if (result == null) {
+			log.error("*** ERROR Recuperando el usuario username=" + username);
 			return ResponseEntity.notFound().build();
+		}
 		else
 			return ResponseEntity.ok(result);
 	}
@@ -94,15 +97,10 @@ public class MsUserController {
 	 * TODO: ¿Excepción en saved?
 	 */
 	@PostMapping("/user")
-	public ResponseEntity<?> nuevousuario(@RequestBody User nuevo) {
+	public ResponseEntity<?> nuevousuario(@RequestBody CreateUserDTO nuevo) {
 		log.info("*** Añadiendo el usuario " + nuevo.toString());
-		
-		User usuario = usuarioRepositorio.save(nuevo);
-		
-		if (usuario!=null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
-		else
-			return ResponseEntity.badRequest().body(null);
+				
+		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepositorio.save(new User(nuevo)));
 	}
 	
 	/**
@@ -173,7 +171,7 @@ public class MsUserController {
 		List<User> result = new ArrayList<User>();
 		
 		for (int i=0;i<number;i++) {
-			User randomUser = new User(true);
+			User randomUser = new User(new CreateUserDTO(true));
 			result.add(randomUser);
 			usuarioRepositorio.save(randomUser);
 		}

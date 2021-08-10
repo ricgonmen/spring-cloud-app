@@ -1,4 +1,4 @@
-package com.ricgonmen.ms_user.rest;
+package com.ricgonmen.ms_user.rest.excepcion;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

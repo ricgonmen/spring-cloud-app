@@ -9,7 +9,7 @@ Picture (only URL value)
 Users will be persisted to a database. You can use any database of your preference, relational or
 not. Usage of a memory database or one integrated in the app itself is advised for simplicity.*/
 
-package com.ricgonmen.ms_user.rest;
+package com.ricgonmen.ms_user.rest.dto;
 
 import java.util.Random;
 
@@ -23,12 +23,12 @@ import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data @AllArgsConstructor @NoArgsConstructor
-@Entity
-@Table(name = "tusers")
-public class User {
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+public class UserDTO {
 	
 	private String randomString() {
 	    int leftLimit = 97; // letter 'a'
@@ -44,7 +44,7 @@ public class User {
 	    return generatedString;
 	}
 
-	public User(boolean random) {
+	public UserDTO(boolean random) {
 		super();
 		if (random) {
 			this.id = null;
@@ -57,12 +57,8 @@ public class User {
 	}
 
 
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
-	@Column(unique=true)
-	@NotNull
 	private String username;
 	
 	private String name;
@@ -71,6 +67,5 @@ public class User {
 	
 	private String gender;
 	
-	private String picture;
-	
+	private String picture;	
 }

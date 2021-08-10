@@ -16,10 +16,11 @@
 // https://github.com/OpenWebinarsNet/spring-rest-apis
 
 
-package com.ricgonmen.ms_user.rest;
+package com.ricgonmen.ms_user.rest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +32,22 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ricgonmen.ms_user.rest.dto.UserDTO;
+import com.ricgonmen.ms_user.rest.dto.converter.UserDTOConverter;
+import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
+import com.ricgonmen.ms_user.rest.model.User;
+import com.ricgonmen.ms_user.rest.model.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 public class MsUserController {
 	private final UserRepository usuarioRepositorio;
+	private final UserDTOConverter usuarioDTOConverter;
 	
-	MsUserController(UserRepository usuarioRepositorio) {
-		log.info("*** Repo inyectado");
-	    this.usuarioRepositorio = usuarioRepositorio;
-	}
-
 	/**
 	 * Obtenemos todos los usuarios
 	 * /api/user/ (GET): return the list of all users.
@@ -57,7 +62,10 @@ public class MsUserController {
 		if (result.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		} else {
-			return ResponseEntity.ok(result);
+			List<UserDTO> dtoResult = result.stream().map(usuarioDTOConverter::convertToDto)
+					.collect(Collectors.toList());
+
+			return ResponseEntity.ok(dtoResult);
 		}
 		
 	}

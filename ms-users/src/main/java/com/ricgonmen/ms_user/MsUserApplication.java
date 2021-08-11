@@ -21,18 +21,10 @@ Extra optional features (only if you are done with the previous features):
 
 package com.ricgonmen.ms_user;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
-
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
-
-import lombok.extern.slf4j.Slf4j;
 
 @EnableFeignClients
 @EnableDiscoveryClient

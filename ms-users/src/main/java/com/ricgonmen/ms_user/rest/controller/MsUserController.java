@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +40,7 @@ import com.ricgonmen.ms_user.rest.excepcion.ApiError;
 import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
 import com.ricgonmen.ms_user.rest.model.User;
 import com.ricgonmen.ms_user.rest.model.UserRepository;
+import com.ricgonmen.ms_user.service.MsUserService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -51,8 +53,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class MsUserController {
-	private final UserRepository usuarioRepositorio;
-	private final UserDTOConverter usuarioDTOConverter;
+	
+	@Autowired
+	private MsUserService userService;
 	
 	/**
 	 * /api/user/ (GET): return the list of all users.
@@ -68,15 +71,12 @@ public class MsUserController {
 	public ResponseEntity<?> obtenerTodos() {
 		log.info("*** Recuperando todos los usuarios");
 		
-		List<User> result = usuarioRepositorio.findAll();
+		List<UserDTO> result = userService.getUsers();
 
 		if (result.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		} else {
-			List<UserDTO> dtoResult = result.stream().map(usuarioDTOConverter::convertToDto)
-					.collect(Collectors.toList());
-
-			return ResponseEntity.ok(dtoResult);
+			return ResponseEntity.ok(result);
 		}
 		
 	}
@@ -95,7 +95,7 @@ public class MsUserController {
 	@GetMapping("/user/{username}")
 	public UserDTO obtenerUnoPorUsername(@ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
-		return usuarioDTOConverter.convertToDto(usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
+		return userService.getUser(username);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class MsUserController {
 	public ResponseEntity<?> nuevousuario(@ApiParam(value="User JSON", required=true, type = "application/json")  @RequestBody CreateUserDTO newUser) {
 		log.info("*** Añadiendo el usuario " + newUser.toString());
 				
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepositorio.save(new User(newUser)));
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(newUser));
 	}
 	
 	/**
@@ -130,18 +130,10 @@ public class MsUserController {
 			@ApiResponse(code=500, message="Internal Server Error", response=ApiError.class)
 	})
 	@PutMapping("/user/{username}")
-	public User editarusuarioPorUsername(@RequestBody UserDTO currentUser, @ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
-		log.info("*** Editando el usuario '" +currentUser.toString() + "' con username " + username);
+	public UserDTO editarusuarioPorUsername(@RequestBody UserDTO newUserData, @ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
+		log.info("*** Actualizando el usuario con username '" + username + "' a los datos " + newUserData.toString());
 		
-		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
-
-		if (user != null) {
-			currentUser.setId(user.getId());
-			return usuarioRepositorio.save(usuarioDTOConverter.convertToEntity(currentUser));
-		} else {
-			return null;
-		}
-		
+		return userService.updateUser(newUserData,username);	
 	}
 
 	
@@ -161,13 +153,9 @@ public class MsUserController {
 	public ResponseEntity<?> borrarusuarioPorUsername(@ApiParam(value="Username key", required=true, type = "string") @PathVariable String username) {
 		log.info("*** Borrando el usuario username=" + username);
 		
-		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		userService.deleteUser(username);
 
-		if (user != null) {
-			usuarioRepositorio.deleteById(user.getId());
-			return ResponseEntity.ok().build();
-		} else
-			return ResponseEntity.badRequest().body(null);
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -187,14 +175,6 @@ public class MsUserController {
 	public ResponseEntity<?> generarUsuariosRandom(@ApiParam(value="Number of users to generate", required=true, type = "Long") @PathVariable Long number) {
 		log.info("*** Creando " + number + " usuarios aleatorios.");
 	
-		List<User> result = new ArrayList<>();
-		
-		for (int i=0;i<number;i++) {
-			User randomUser = usuarioDTOConverter.convertToEntity(CreateUserDTO.createRamdom());
-			result.add(randomUser);
-			usuarioRepositorio.save(randomUser);
-		}
-		
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok(userService.addRandomUsers(number));
 	}
 }

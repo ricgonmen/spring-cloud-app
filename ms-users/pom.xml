@@ -11,8 +11,8 @@
 	<groupId>com.example.ricgonmen</groupId>
 	<artifactId>ms-users</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>descubrimiento-eureka</name>
-	<description>Cliente de descubrimiento eureka</description>
+	<name>ms-users</name>
+	<description>Servicio CRUD de usuarios</description>
 	<properties>
 		<java.version>14</java.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>

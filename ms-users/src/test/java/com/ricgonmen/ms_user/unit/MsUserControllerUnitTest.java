@@ -40,7 +40,6 @@ public class MsUserControllerUnitTest {
     @Autowired
     MockMvc mockMvc;
     
-    /*
     @Test
     public void testRandomUserGenerator() throws Exception {
     	UserDTO randomUserDTO = msUserService.getRandomUserDTO();
@@ -59,14 +58,14 @@ public class MsUserControllerUnitTest {
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$[0].username", Matchers.is(user.getUsername())));
     }
-    */
+    
     
     @Test
     public void testfindOne() throws Exception {
     	log.info("*** testfindOne");
     	log.info("*** mockMvc: " + mockMvc);
     	log.info("*** mockMvc: " + mockMvc.toString());
-        ResultActions result = mockMvc.perform(get("/users/a"))
+        mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$[0].username", Matchers.is("a")));

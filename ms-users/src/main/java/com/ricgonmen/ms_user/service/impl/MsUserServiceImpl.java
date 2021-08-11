@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,19 +26,28 @@ public class MsUserServiceImpl implements MsUserService {
 	@Autowired
 	private UserDTOConverter usuarioDTOConverter;
 	
+	@Override
 	public List<UserDTO> getUsers() {		
 		return usuarioRepositorio.findAll().stream().map(usuarioDTOConverter::convertToDto)
 				.collect(Collectors.toList());
 	}
 	
+	@Override
 	public UserDTO getUser(String username) {
 		return usuarioDTOConverter.convertToDto(usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
 	}
 	
+	@Override
+	public Page<User> getUsers(Pageable pageable) {
+		return  usuarioRepositorio.findAll(pageable);
+	}
+	
+	@Override
 	public UserDTO addUser(CreateUserDTO newuser) {
 		return usuarioDTOConverter.convertToDto(usuarioRepositorio.save(new User(newuser)));
 	}
 
+	@Override
 	public UserDTO updateUser(UserDTO newUserData, String username) {
 		User currentUser = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
@@ -49,6 +60,7 @@ public class MsUserServiceImpl implements MsUserService {
 		}
 	}
 	
+	@Override
 	public UserDTO getRandomUserDTO() {
 		RestTemplate restTemplate = new RestTemplate();
 		RamdomUserDTO randomUserDTO = restTemplate.getForObject(
@@ -57,6 +69,7 @@ public class MsUserServiceImpl implements MsUserService {
 		return randomUserDTO.getResults().iterator().next();
 	}
 	
+	@Override
 	public List<User> addRandomUsers (Long number) {
 		List<User> result = new ArrayList<>();
 		User randomUser;
@@ -70,6 +83,7 @@ public class MsUserServiceImpl implements MsUserService {
 		return result;
 	}
 
+	@Override
 	public void deleteUser(String username) {
 		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		usuarioRepositorio.deleteById(user.getId());

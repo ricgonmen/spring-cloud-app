@@ -17,11 +17,9 @@
 
 package com.ricgonmen.ms_user.rest.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,11 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
 import com.ricgonmen.ms_user.rest.dto.UserDTO;
-import com.ricgonmen.ms_user.rest.dto.converter.UserDTOConverter;
 import com.ricgonmen.ms_user.rest.excepcion.ApiError;
-import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
 import com.ricgonmen.ms_user.rest.model.User;
-import com.ricgonmen.ms_user.rest.model.UserRepository;
 import com.ricgonmen.ms_user.service.MsUserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +49,7 @@ import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
+@RestController("/api")
 @RequiredArgsConstructor
 @Slf4j
 public class MsUserController {

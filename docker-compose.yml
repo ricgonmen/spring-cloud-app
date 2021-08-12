@@ -1,0 +1,29 @@
+version: '2'
+services:
+    servidor-directorio-eureka:
+        container_name: servidor-directorio-eureka
+        build:
+            context: servidor-directorio-eureka
+            dockerfile: Dockerfile
+        image: servidor-directorio-eureka:latest
+        networks:
+            - spring-cloud-network
+    servidor-gateway-eureka:
+        container_name: servidor-gateway-eureka
+        build:
+            context: docker-servidor-gateway-eureka
+            dockerfile: Dockerfile
+        image: servidor-gateway-eureka:latest
+        networks:
+            - spring-cloud-network
+    ms-users:
+        container_name: ms-users
+        build:
+            context: docker-ms-users
+            dockerfile: Dockerfile
+        image: ms-users:latest
+        networks:
+            - spring-cloud-network
+networks:
+    spring-cloud-network:
+        driver: bridge

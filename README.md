@@ -46,17 +46,14 @@ As the project needs the Discovery Server, the Gateway and the Service itself yo
 ## Running with Docker
 After the package construction, you can use the `docker-compose` to launch the configuration defined on `docker-compose.yml`.
 
-To build images, create containers and start it:
+To build images, create containers and start it in background:
 
-`docker-compose up --build`
+`docker-compose build`
+`docker-compose up -d`
 
 To stop the containers, remove them from Docker and remove the connected networks from it:
 
 `docker-compose down`
-
-In my test with docker I have found that sometimes the order of the start is not related to the order on the yml, I have try my best to automatize it all but it will fail if you start the services on a wrong order. If you are not able run it correctly maybe is better just to do the build and start every image manually:
-
-`docker-compose build`
 
 ## Check if Spring Cloud is on
 To check the Eureka Discovery Server is up please type in your brownser:

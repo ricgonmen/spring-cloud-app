@@ -1,10 +1,7 @@
 # Spring Cloud User Application
 
-How to build and dockerize
-
-make clean package
-
-How to run from comand line
+Build the applications
+mvn clean package
 
 Launch the 4 projects (parent, eureka, gateway, service)
 mvn -T 4 spring-boot:run
@@ -18,3 +15,12 @@ SERVIDOR-GATEWAY-EUREKA
 
 Test REST trhoug swagger
 http://localhost:8090/eureka/swagger-ui/index.html
+
+DOCKER
+How to build images, create containers and start it
+
+docker-compose up --build
+
+Stop the containers, remove them from Docker and remove the connected networks from it
+
+docker-compose down

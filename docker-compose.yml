@@ -11,7 +11,7 @@ services:
     servidor-gateway-eureka:
         container_name: servidor-gateway-eureka
         build:
-            context: docker-servidor-gateway-eureka
+            context: servidor-gateway-eureka
             dockerfile: Dockerfile
         image: servidor-gateway-eureka:latest
         networks:
@@ -19,7 +19,7 @@ services:
     ms-users:
         container_name: ms-users
         build:
-            context: docker-ms-users
+            context: ms-users
             dockerfile: Dockerfile
         image: ms-users:latest
         networks:

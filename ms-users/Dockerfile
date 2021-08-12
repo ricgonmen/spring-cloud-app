@@ -1,5 +1,3 @@
 FROM adoptopenjdk/openjdk11:latest
-MAINTAINER com.ricgonmen
-ARG JAR_FILE=ms-users/target/*.jar
-COPY ${JAR_FILE} app.jar
+COPY target/ms-users-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

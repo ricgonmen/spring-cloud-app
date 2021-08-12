@@ -6,6 +6,8 @@ services:
             context: servidor-directorio-eureka
             dockerfile: Dockerfile
         image: servidor-directorio-eureka:latest
+        ports:
+            - 8761:8761
         networks:
             - spring-cloud-network
     servidor-gateway-eureka:
@@ -14,6 +16,8 @@ services:
             context: servidor-gateway-eureka
             dockerfile: Dockerfile
         image: servidor-gateway-eureka:latest
+        ports:
+            - 8090:8090
         networks:
             - spring-cloud-network
     ms-users:

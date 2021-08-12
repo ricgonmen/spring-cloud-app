@@ -10,12 +10,12 @@
 	</parent>
 	
 	<groupId>com.example.ricgonmen</groupId>
-	<artifactId>directorio-eureka</artifactId>
+	<artifactId>servidor-directorio-eureka</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
-	<name>directorio-eureka</name>
-	<description>Demo project for Spring Boot</description>
+	<name>servidor-directorio-eureka</name>
+	<description>Eureka Server</description>
 	
 	<properties>
 		<java.version>11</java.version>

@@ -1,7 +1,5 @@
 # Spring Cloud User Application
 
-The purpose of this document is to describe the software generated for Java backed code challenge. I think every thing is complete and in place,... but some test. Honestly I'm not used to write test on a Spring framework so all the mocking and dependencies will take more time for me. I have preferred to deliver on time instead of complete the challenge, hopping the code and documentation is clear and the software is functional (at least most of the manual test I have done point to that).
-
 I have use Java and Spring Boot and structure the code on a parent project with 3 child, why? As you suggest on the interview I have put more effort on a creative way of deliver the software (using Spring Cloud and Docker) than anything else so I have start it from that premise and later on finish all the challenge on the ms-users subproject (the core of it).
 
 Please find bellow all the information to understand this structure, how to package and launch. I will be please of answer your questions o have a code review together with you.
@@ -91,16 +89,3 @@ http://localhost:8090/swagger-ui/index.html](http://localhost:8090/swagger-ui/in
 When it is launched from Spring Cloud:
 
 [http://localhost:8090/eureka/swagger-ui/index.html](http://localhost:8090/eureka/swagger-ui/index.html)
-
-# Final thoughts
-Please apologize if I have made all the partial commits on my machine but I was so shy of my progress with Spring Cloud and some of the parts of the challenge like playing arround docker. As I told you I want to be honest on that, I thing I'm a good developer but I have been more near of Manager or Scrum Master role this past years. The frameworks and the technology change so fast! I guess on important thing is to keep the base and the good practices, this framework also will pass away.
-
-As I have mention the test are partially solved, I guess I’m not going to have more time because I will be on holidays this two last weeks of August.
-
-I hope you will find it interesting, maybe not the best approach but I hope is clear and addressed in a creative way. I have enjoy a lot with this challenge, learn a lot and remember the joy of constructing software. Thanks a lot for that! 
-
-Regards,
-
-Ricardo
-
-

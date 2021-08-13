@@ -26,6 +26,6 @@ public interface MsUserService {
 	
 	public List<User> addRandomUsers (Long number);
 	
-	public void deleteUser(String username);
+	public UserDTO deleteUser(String username);
 
 }

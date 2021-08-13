@@ -84,9 +84,10 @@ public class MsUserServiceImpl implements MsUserService {
 	}
 
 	@Override
-	public void deleteUser(String username) {
+	public UserDTO deleteUser(String username) {
 		User user = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		usuarioRepositorio.deleteById(user.getId());
+		return usuarioDTOConverter.convertToDto(user);
 	}
 
 }

@@ -18,6 +18,7 @@ import com.ricgonmen.ms_user.rest.config.MsUserConfig;
 
 import com.ricgonmen.ms_user.rest.dto.UserDTO;
 import com.ricgonmen.ms_user.rest.model.User;
+import com.ricgonmen.ms_user.rest.model.User.Gender;
 
 @SpringBootTest
 class UserDTOConverterTest {
@@ -27,7 +28,7 @@ class UserDTOConverterTest {
 	
 	@Test
 	final void testConvertToDto() {
-		UserDTO userDTO = new UserDTO();
+		UserDTO userDTO = new UserDTO(Long.valueOf(1),"username_","name_","email_",Gender.MALE,"picture_");
 		User user = userDTOConverter.convertToEntity(userDTO);
 		assertEquals(userDTO.getEmail(), user.getEmail()); 
 		assertEquals(userDTO.getGender(), user.getGender());
@@ -39,7 +40,7 @@ class UserDTOConverterTest {
 
 	@Test
 	final void testConvertToEntity() {
-		User user = new User();
+		User user = new User(Long.valueOf(1),"username_","name_","email_",Gender.MALE,"picture_");
 		UserDTO userDTO =  userDTOConverter.convertToDto(user);
 		assertEquals(userDTO.getEmail(), user.getEmail()); 
 		assertEquals(userDTO.getGender(), user.getGender());

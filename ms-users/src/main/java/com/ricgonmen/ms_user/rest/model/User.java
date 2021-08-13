@@ -31,10 +31,12 @@ import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @Entity
 @Table(name = "tusers")
+@ToString
 public class User {
 	public User(CreateUserDTO nuevo) {
 		super();

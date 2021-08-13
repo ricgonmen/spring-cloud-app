@@ -88,6 +88,7 @@ public class MsUserController {
 	public ResponseEntity<Map<String, Object>> obtenerTodosPaginados(
 			@ApiParam(value = "Page number (default 0)", required = false, type = "int") @RequestParam(defaultValue = "0") int page,
 			@ApiParam(value = "Size of page (default 3)", required = false, type = "int") @RequestParam(defaultValue = "3") int size) {
+		log.info("*** Recuperando el pagina =" + page + " de tamaño " + size);
 
 		Pageable paging = PageRequest.of(page, size);
 
@@ -123,7 +124,7 @@ public class MsUserController {
 	 * /api/user/ (POST): create a user.
 	 * 
 	 * @param nuevo
-	 * @return 201 y el producto insertado TODO: ¿Excepción en saved?
+	 * @return 201 y el producto insertado 
 	 */
 	@ApiOperation(value = "Create a user", notes = "")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),

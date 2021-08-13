@@ -63,9 +63,7 @@ public class User {
 	
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-	
-	//TODO: @ManyToOne 	@JoinColumn(name="gender_id")
-	
+		
 	private String picture;
 	
 }

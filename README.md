@@ -1,6 +1,6 @@
-# Spring Cloud User Application
+﻿# Spring Cloud User Application
 
-I have use Java and Spring Boot and structure the code on a parent project with 3 child, why? As you suggest on the interview I have put more effort on a creative way of deliver the software (using Spring Cloud and Docker) than anything else so I have start it from that premise and later on finish all the challenge on the ms-users subproject (the core of it).
+I have use Java and Spring Boot and structure the code on a parent project with 3 child, why? As you suggest I have put more effort on a creative way of deliver the software (using Spring Cloud and Docker) than anything else so I have start it from that premise and later on finish all the challenge on the ms-users subproject (the core of it).
 
 Please find bellow all the information to understand this structure, how to package and launch. I will be please of answer your questions o have a code review together with you.
 
@@ -15,6 +15,32 @@ The project folder contains:
 * **README.md**: This document.
 
 Inside of every subproject a classic project structure was followed. Please see `pom.xml` and `Dockerfile` subfolders on each module for more details about the dependencies and requirements of the Docker containers.
+
+## Data model and databases
+As is more convenient for development and test purposes I have used H2 in memory database. Also, as it is explained bellow, for the Docker approach it was substituded by postgres.
+
+The data model is driven by JPA according to this definition:
+
+```java
+public class User {
+	public enum Gender { MALE, FEMALE }
+	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) 
+	private Long id;
+	
+	@Column(unique=true) @NotNull
+	private String username;
+	
+	private String name;
+	
+	private String email;
+	
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+	
+	private String picture;
+}
+```
 
 ## `ms-users` application
 The core of the project is this submodule. Created as a Spring Boot Application but with all the necessary annotations for a correct deployment as a Spring Cloud service. 

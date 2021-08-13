@@ -1,5 +1,5 @@
 version: '2'
-services:
+services:  
     servidor-directorio-eureka:
         container_name: servidor-directorio-eureka
         build:
@@ -20,6 +20,8 @@ services:
             - "8090:8090"
         networks:
             - spring-cloud-network
+        depends_on:
+            - servidor-directorio-eureka
     ms-users:
         container_name: ms-users
         build:
@@ -28,6 +30,22 @@ services:
         image: ms-users:latest
         networks:
             - spring-cloud-network
+        depends_on:
+            - db
+            - servidor-gateway-eureka
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+            - SPRING_DATASOURCE_USERNAME=compose-postgres
+            - SPRING_DATASOURCE_PASSWORD=compose-postgres
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update     
+            - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
+            - SPRING.JPA.DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+    db:
+        image: 'postgres:13.1-alpine'
+        container_name: db
+        environment:
+            - POSTGRES_USER=compose-postgres
+            - POSTGRES_PASSWORD=compose-postgres
 networks:
     spring-cloud-network:
         driver: bridge

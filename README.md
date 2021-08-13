@@ -12,8 +12,8 @@ I will be please of answer your questions o have a code review together with you
 The project folder `spring-cloud-app` contains:
 
 * **servidor-directorio-eureka**: Spring boot module for the Eureka Discovery Server (only one instance is need for this purpose, please see `applications.properties` for more detail). If started, it is available on port `8761` as Spring Cloud standard claim.
-* **servidor-gateway-eureka**: Spring boot module for the Gateway Server (only one instance is need for this purpose, please see `applications.properties` for more detail). If started, it is available on port `8090` as Spring Cloud stardars claims. It must be started on second place in order to registry it self on the Eureka Server (available on `http://localhost:8761/eureka`).
-* **ms-users**: Spring boot module with the main service. Please run in third place, its port is random and it is possible to launch more than one instance (keep in mind that the database on memory will be not shared (a file database is needed), the purpose is just to show a scalable microservice approach). It will connect to the Discovery/Gateway. All the load will be balanced to all of the ms-users instances, you don't need to know the port to call them. All the connections and balance are driven by the gateway.
+* **servidor-gateway-eureka**: Spring boot module for the Gateway Server (only one instance is need for this purpose, please see `applications.properties` for more detail). If started, it is available on port `8090` as Spring Cloud stardars claims. It is nice to started it on second place in order to registry it self on the Eureka Server (available on `http://localhost:8761/eureka`) and don't get any errors. If don't it will recover as soon at the Discovery Server is in place.
+* **ms-users**: Spring boot module with the main service. Please run in third place if you don't want to have any errors. Its port is random and it is possible to launch more than one instance (keep in mind that the database on memory will be not shared (a file database is needed), the purpose is just to show a scalable microservice approach). It will connect to the Discovery/Gateway. All the load will be balanced to all of the ms-users instances, you don't need to know the port to call them. All the connections and balance are driven by the gateway.
 * **docker-compose.yml**: Docker compose file, it defines all the containers and images needed for a Docker deploy (please find more instructions on how to use it later on this document).
 * **pom.xml**: POM of the parent project.
 * **eclipse_launch**: All the project was developed using STS, so I keep this launchers on the git repository for future reference.
@@ -21,8 +21,14 @@ The project folder `spring-cloud-app` contains:
 
 Inside of every subproject a classic project structure was followed. Please see `pom.xml` and `Dockerfile` subfolders on each module for more details about the dependencies and requirements of the Docker containers.
 
-## Launch the ms-users application for development purposes
-Is it possible to launch this application 'stand-alone' with the need of the Discovery and Gateway services, please use the dev environment (see `application-dev.properties`). The port in this case is fix to `9000` just to do more easy to test it from any external tool. if It is used on your machine, please change manually on the properties file.
+## ms-users application
+The core of the project is this submodule. Created as a Spring Boot Application but with all the necesary annotations for a correct deployment as a Spring Cloud service. 
+
+Both the Discovery and Gateway can have also multiple instances but not in this example, they are not configured for that. The ms-users application can have more instances, this how it works:
+
+* The dev environment (please see `application-dev.properties`) changes the configuration and it possible to launch this application 'stand-alone' without the need of the Discovery and Gateway services. The port in this case is fix to `9000` just to do more easy to test it from any external tool. if It is used on your machine, please change manually on the properties file. The H2 database works in memory, so because the port is fix and the database is not going to be shared has no sense to launch more than one instance.
+* The production environment (please see `application.properties`) : the port is random and the H2 database is on a file. To launch more instances is possible.
+* The docker environment (please see `application-docker.properties`) : the port is random and the H2 database is on a file. To launch more instances is possible. Also the name of the Discovery Server is fix to the name of the Discovery container in order to be able to get to it during runtime. See the docker instructions to launch more than one instance.
 
 ## Testing with postman
 I have use postman to test the API-REST, please find the configuration on this [public link](https://www.getpostman.com/collections/a265d0104e17ed573d10) if you would like to use it on your own.
@@ -39,7 +45,7 @@ I have use a Windows machine, I hope every thing is in place and this commands a
 `mvn clean package`
 
 ## Running from command line in your host 
-As the project needs the Discovery Server, the Gateway and the Service itself you will need to use the -T option for maven to create paralel launches. In my test Maven has kept the order of launch (as typed on the main POM). If it doesn't work maybe you have to launch it separately on the order mentioned before. To manage the 4 projects in paralel (parent, eureka, gateway, service) please type from `spring-cloud-app` folder:
+As the project needs the Discovery Server, the Gateway and the Service itself you will need to use the -T option for maven to create parallel launches. In my test Maven has kept the order of launch (as typed on the main POM). If it doesn't work maybe you have to launch it separately on the order mentioned before. To manage the 4 projects in parallel (parent, eureka, gateway, service) please type from `spring-cloud-app` folder:
 
 `mvn -T 4 spring-boot:run`
 
@@ -49,11 +55,16 @@ After the package construction, you can use the `docker-compose` to launch the c
 To build images, create containers and start it in background:
 
 `docker-compose build`
+
 `docker-compose up -d`
 
 To stop the containers, remove them from Docker and remove the connected networks from it:
 
 `docker-compose down`
+
+To start the container scalling the ms-user service (in example 3 instances) please type:
+
+`docker-compose up --scale ms-users=3`
 
 ## Check if Spring Cloud is on
 To check the Eureka Discovery Server is up please type in your brownser:

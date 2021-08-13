@@ -9,7 +9,7 @@ services:
         ports:
             - "8761:8761"
         networks:
-            - spring-cloud-network
+            - eureka_network
     servidor-gateway-eureka:
         container_name: servidor-gateway-eureka
         build:
@@ -19,9 +19,11 @@ services:
         ports:
             - "8090:8090"
         networks:
-            - spring-cloud-network
+            - eureka_network
         depends_on:
             - servidor-directorio-eureka
+        environment:
+            - EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE=http://servidor-directorio-eureka:8761/eureka
     ms-users:
         container_name: ms-users
         build:
@@ -29,23 +31,26 @@ services:
             dockerfile: Dockerfile
         image: ms-users:latest
         networks:
-            - spring-cloud-network
+            - eureka_network
         depends_on:
             - db
             - servidor-gateway-eureka
         environment:
-            - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-            - SPRING_DATASOURCE_USERNAME=compose-postgres
-            - SPRING_DATASOURCE_PASSWORD=compose-postgres
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/docker-postgres
+            - SPRING_DATASOURCE_USERNAME=docker-postgres
+            - SPRING_DATASOURCE_PASSWORD=docker-postgres
             - SPRING_JPA_HIBERNATE_DDL_AUTO=update     
             - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
             - SPRING.JPA.DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+            - EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE=http://servidor-directorio-eureka:8761/eureka
     db:
         image: 'postgres:13.1-alpine'
         container_name: db
         environment:
-            - POSTGRES_USER=compose-postgres
-            - POSTGRES_PASSWORD=compose-postgres
+            - POSTGRES_USER=docker-postgres
+            - POSTGRES_PASSWORD=docker-postgres
+        networks:
+            - eureka_network
 networks:
-    spring-cloud-network:
+    eureka_network:
         driver: bridge

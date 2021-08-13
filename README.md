@@ -41,11 +41,13 @@ I have use a Windows machine, I hope every thing is in place and this commands a
 
 `mvn clean package`
 
-## Running from command line in your host 
+## Running from command line with Maven 
 
 As the project needs the Discovery Server, the Gateway and the Service itself you will need to use the -T option for maven to create parallel launches. In my test Maven has kept the order of launch (as typed on the main POM). If it doesn't work maybe you have to launch it separately on the order mentioned before. To manage the 4 projects in parallel (parent, eureka, gateway, service) please type from `spring-cloud-app` folder, it works for me:
 
 `mvn -T 4 spring-boot:run`
+
+Maybe it is going to take a while for all the services to startup and link to each other, it could be normal that the gateway is in place but it doesn't reach the service until a few seconds.
 
 ## Running with Docker
 
@@ -61,7 +63,9 @@ To stop the containers, remove them from Docker and remove the connected network
 
 To start the container scalling the ms-user service (in example 3 instances) please type:
 
-`docker-compose up --scale ms-users=3`
+`docker-compose up --scale ms-users=3 -d`
+
+As it happens with Maven, it is going to take a while for all the services to startup and link to each other, even more if several instances of the user service are launched.
 
 ## Check if Spring Cloud is on
 To check the Eureka Discovery Server is up please type in your brownser:
@@ -71,17 +75,25 @@ To check the Eureka Discovery Server is up please type in your brownser:
 It will show the Eureka main page with all the information of the instance, including all the information of the registred services. After the Gateway and the MS-USERS is on place you will find it as Applications.
 
 ## User End Point
-The application will be available on:
+The application will be available on when it is used as stand-alone application:
 
 [http://localhost:8090/api/user](http://localhost:8090/api/user)
 
+If loaded on Spring Cloud context the url is:
+
+[http://localhost:8090/eureka/api/user](http://localhost:8090/eureka/api/user)
+
 ## Swagger
-If you want to see the services and test it using Swagger please use:
+If you want to see the services documentation and test it using Swagger please use:
+
+http://localhost:8090/swagger-ui/index.html](http://localhost:8090/swagger-ui/index.html)
+
+When it is launched from Spring Cloud:
 
 [http://localhost:8090/eureka/swagger-ui/index.html](http://localhost:8090/eureka/swagger-ui/index.html)
 
 # Final thoughts
-Please apologize if I have made all the partial commits on my machine but I was so shy of my progress with Spring Cloud, and some of the parts of the challenge. As I told you I want to be honest on that, I thing I'm a good developer but I have been more near of Manager or Scrum Master role this past years. The frameworks and the technology change so fast! I guess on important thing is to keep the base and the good practices, this framework also will pass away.
+Please apologize if I have made all the partial commits on my machine but I was so shy of my progress with Spring Cloud and some of the parts of the challenge like playing arround docker. As I told you I want to be honest on that, I thing I'm a good developer but I have been more near of Manager or Scrum Master role this past years. The frameworks and the technology change so fast! I guess on important thing is to keep the base and the good practices, this framework also will pass away.
 
 As I have mention the test are partially solved, I guess I’m not going to have more time because I will be on holidays this two last weeks of August.
 

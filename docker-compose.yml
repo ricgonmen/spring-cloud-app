@@ -25,7 +25,6 @@ services:
         environment:
             - EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE=http://servidor-directorio-eureka:8761/eureka
     ms-users:
-        container_name: ms-users
         build:
             context: ms-users
             dockerfile: Dockerfile

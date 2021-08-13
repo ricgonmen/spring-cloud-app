@@ -49,7 +49,7 @@ import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController("/api")
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 public class MsUserController {
@@ -64,19 +64,14 @@ public class MsUserController {
 	 */
 	@ApiOperation(value = "Return the list of all users", notes = "")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
-			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@GetMapping("/user")
+	@GetMapping("/api/user")
 	public ResponseEntity<?> obtenerTodos() {
 		log.info("*** Recuperando todos los usuarios");
 
 		List<UserDTO> result = userService.getUsers();
 
-		if (result.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok(result);
-		}
+		return ResponseEntity.ok(result);
 
 	}
 
@@ -89,7 +84,7 @@ public class MsUserController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@GetMapping("/puser")
+	@GetMapping("/api/puser")
 	public ResponseEntity<Map<String, Object>> obtenerTodosPaginados(
 			@ApiParam(value = "Page number (default 0)", required = false, type = "int") @RequestParam(defaultValue = "0") int page,
 			@ApiParam(value = "Size of page (default 3)", required = false, type = "int") @RequestParam(defaultValue = "3") int size) {
@@ -117,7 +112,7 @@ public class MsUserController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@GetMapping("/user/{username}")
+	@GetMapping("/api/user/{username}")
 	public UserDTO obtenerUnoPorUsername(
 			@ApiParam(value = "Username key", required = true, type = "string") @PathVariable String username) {
 		log.info("*** Recuperando el usuario username=" + username);
@@ -134,7 +129,7 @@ public class MsUserController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
 			@ApiResponse(code = 422, message = "Unprocessable Entity", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@PostMapping("/user")
+	@PostMapping("/api/user")
 	public ResponseEntity<?> nuevousuario(
 			@ApiParam(value = "User JSON", required = true, type = "application/json") @RequestBody CreateUserDTO newUser) {
 		log.info("*** Añadiendo el usuario " + newUser.toString());
@@ -153,7 +148,7 @@ public class MsUserController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@PutMapping("/user/{username}")
+	@PutMapping("/api/user/{username}")
 	public UserDTO editarusuarioPorUsername(@RequestBody UserDTO newUserData,
 			@ApiParam(value = "Username key", required = true, type = "string") @PathVariable String username) {
 		log.info("*** Actualizando el usuario con username '" + username + "' a los datos " + newUserData.toString());
@@ -172,7 +167,7 @@ public class MsUserController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
 			@ApiResponse(code = 404, message = "Not Found", response = ApiError.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@DeleteMapping("/user/{username}")
+	@DeleteMapping("/api/user/{username}")
 	public ResponseEntity<?> borrarusuarioPorUsername(
 			@ApiParam(value = "Username key", required = true, type = "string") @PathVariable String username) {
 		log.info("*** Borrando el usuario username=" + username);
@@ -192,10 +187,10 @@ public class MsUserController {
 	 * @return 200 y lista de n usuarios generados
 	 */
 	@ApiOperation(value = "Generate a number, provided as a parameter, of random users", notes = "Users\r\n"
-			+ "	will be added to the collection of existing users.")
+			+ " will be added to the collection of existing users.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = UserDTO.class),
 			@ApiResponse(code = 500, message = "Internal Server Error", response = ApiError.class) })
-	@GetMapping("/user/generate/{number}")
+	@GetMapping("/api/user/generate/{number}")
 	public ResponseEntity<?> generarUsuariosRandom(
 			@ApiParam(value = "Number of users to generate", required = true, type = "Long") @PathVariable Long number) {
 		log.info("*** Creando " + number + " usuarios aleatorios.");

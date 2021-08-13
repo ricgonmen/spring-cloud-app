@@ -42,6 +42,17 @@ public class User {
 }
 ```
 
+## API REST
+The API published deliver this services:
+
+* /api/user/ (GET): return the list of all users.
+* /api/puser/{page=?&size=?} (GET): return the list of all users (paginatged).
+* /api/user/{username}/ (GET): return a single user.
+* /api/user/ (POST): create a user.
+* /api/user/{username}/ (PUT): update the information of a single user.
+* /api/user/{username}/ (DELETE) : delete a single user.
+* /api/user/generate/{number}/ (GET): generate n number of random users.
+
 ## `ms-users` application
 The core of the project is this submodule. Created as a Spring Boot Application but with all the necessary annotations for a correct deployment as a Spring Cloud service. 
 

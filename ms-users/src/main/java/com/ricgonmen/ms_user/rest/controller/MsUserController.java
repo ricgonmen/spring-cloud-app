@@ -76,7 +76,7 @@ public class MsUserController {
 	}
 
 	/**
-	 * /api/puser/ (GET): return the list of all users (paginatged).
+	 * /api/puser/{page=?&size=?} (GET): return the list of all users (paginatged).
 	 * 
 	 * @return 404 si no hay usuarios, 200 y lista de usuarios si hay uno o máss
 	 */

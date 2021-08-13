@@ -5,7 +5,7 @@ I have use Java and Spring Boot and structure the code on a parent project with 
 Please find bellow all the information to understand this structure, how to package and launch. I will be please of answer your questions o have a code review together with you.
 
 ## Project Structure
-The project folder `spring-cloud-app` contains:
+The project folder contains:
 
 * **servidor-directorio-eureka**: Spring boot module for the Eureka Discovery Server (only one instance is need for this purpose, please see `applications.properties` for more detail). If started, it is available on port `8761` as Spring Cloud standard claim.
 * **servidor-gateway-eureka**: Spring boot module for the Gateway Server (only one instance is need for this purpose, please see `applications.properties` for more detail). If started, it is available on port `8090` as Spring Cloud stardars claims. In order to get any error, it is nice to started it on second place in order to registry it self on the Eureka Server. If don't it will recover as soon at the Discovery Server is in place.
@@ -89,3 +89,14 @@ http://localhost:8090/swagger-ui/index.html](http://localhost:8090/swagger-ui/in
 When it is launched from Spring Cloud:
 
 [http://localhost:8090/eureka/swagger-ui/index.html](http://localhost:8090/eureka/swagger-ui/index.html)
+
+## Screenshoots
+### REST-API call results
+![api_test_1.png](api_test_1.png)
+![api_test_2.png](api_test_2.png)
+### Eureka Discovery Server Dashboard (one service instance and gateway service)
+![eureka_server_ok.png](eureka_server_ok.png)
+### Eureka Discovery Server Dashboard (three instances and gateway service)
+![eureka_server_ok_multiple_instances.png](eureka_server_ok_multiple_instances.png)
+### Docker (3 service instances, discovery server, gateway server and postgress db server)
+![docker_multiple_instances.png](docker_multiple_instances.png)

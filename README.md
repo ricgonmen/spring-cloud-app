@@ -84,7 +84,11 @@ I have use a Windows machine, I hope every thing is in place and this commands a
 
 ## Running from command line with Maven 
 
-As the project needs the Discovery Server, the Gateway and the Service itself you will need to use the -T option for maven to create parallel launches. In my test Maven has kept the order of launch (as typed on the main POM). If it doesn't work maybe you have to launch it separately on the order mentioned before. To manage the 4 projects in parallel (parent, eureka, gateway, service) please type from `spring-cloud-app` folder, it works for me:
+The core module can be run stand alone, just go to `ms-users` folder and run (please use dev profile to avoid errors because the Cloud servers are not in place and have a fix `9000` port).
+
+`mvn spring-boot:run -Dspring-boot.run.profiles=dev`
+
+For run all the modules, as the project needs the Discovery Server, the Gateway and the Service itself you will need to use the -T option for maven to create parallel launches. In my test Maven has kept the order of launch (as typed on the main POM). If it doesn't work maybe you have to launch it separately on the order mentioned before. To manage the 4 projects in parallel (parent, eureka, gateway, service) please type from `spring-cloud-app` folder, it works for me:
 
 `mvn -T 4 spring-boot:run`
 
@@ -118,16 +122,16 @@ It will show the Eureka main page with all the information of the instance, incl
 ## User End Point
 The application will be available on when it is used as stand-alone application:
 
-[http://localhost:8090/api/user](http://localhost:8090/api/user)
+[http://localhost:9000/api/user](http://localhost:9000/api/user)
 
-If loaded on Spring Cloud context the url is:
+If loaded on Spring Cloud context the application port is random but you have to access through the gateway:
 
 [http://localhost:8090/eureka/api/user](http://localhost:8090/eureka/api/user)
 
 ## Swagger
 If you want to see the services documentation and test it using Swagger please use:
 
-http://localhost:8090/swagger-ui/index.html](http://localhost:8090/swagger-ui/index.html)
+http://localhost:9000/swagger-ui/index.html](http://localhost:9000/swagger-ui/index.html)
 
 When it is launched from Spring Cloud:
 

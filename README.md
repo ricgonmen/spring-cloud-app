@@ -1,8 +1,14 @@
 ﻿# Spring Cloud User Application
 
-I have use Java and Spring Boot and structure the code on a parent project with 3 child, why? As you suggest I have put more effort on a creative way of deliver the software (using Spring Cloud and Docker) than anything else so I have start it from that premise and later on finish all the challenge on the ms-users subproject (the core of it).
+This toy project focus in show how to use:
 
-Please find bellow all the information to understand this structure, how to package and launch. I will be please of answer your questions o have a code review together with you.
+* Spring Boot as driver technology for REST API.
+* JPA for data access for persistence APU.
+* The cloud by a proof of concept about the [Spring Cloud Netflix](https://spring.io/projects/spring-cloud-netflix) ecosystem. 
+* Keep all of that automated with Maven
+* Engage together in a sample deployment on a scalable infraestructure (Docker with multiple instances of the service)
+
+Please find bellow all the information to understand this structure, how to package and launch. Hope you enjoy it, please tell me!
 
 ## Project Structure
 The project folder contains:

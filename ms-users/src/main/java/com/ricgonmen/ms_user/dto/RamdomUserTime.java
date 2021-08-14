@@ -6,6 +6,6 @@ import lombok.ToString;
 
 @Getter @Setter @ToString 
 public class RamdomUserTime {
-    public int instruct;
-    public int generate;
+    int instruct;
+    int generate;
 }

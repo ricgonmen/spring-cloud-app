@@ -6,9 +6,9 @@ import lombok.ToString;
 
 @Getter @Setter @ToString 
 public class RamdomUserInfo {
-    public String seed;
-    public String results;
-    public String page;
-    public String version;
-    public RamdomUserTime time;
+    String seed;
+    String results;
+    String page;
+    String version;
+    RamdomUserTime time;
 }

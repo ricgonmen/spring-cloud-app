@@ -1,6 +1,5 @@
 package com.ricgonmen.ms_user.model;
 
-
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;

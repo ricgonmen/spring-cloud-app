@@ -26,22 +26,25 @@ public class MsUserServiceImpl implements MsUserService {
 	@Autowired
 	private UserDTOConverter usuarioDTOConverter;
 	
+	RestTemplate restTemplate = new RestTemplate();
+
 	@Override
-	public List<UserDTO> getUsers() {		
+	public List<UserDTO> getUsers() {
 		return usuarioRepositorio.findAll().stream().map(usuarioDTOConverter::convertToDto)
 				.collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public UserDTO getUser(String username) {
-		return usuarioDTOConverter.convertToDto(usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
+		return usuarioDTOConverter.convertToDto(
+				usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username)));
 	}
-	
+
 	@Override
 	public Page<User> getUsers(Pageable pageable) {
-		return  usuarioRepositorio.findAll(pageable);
+		return usuarioRepositorio.findAll(pageable);
 	}
-	
+
 	@Override
 	public UserDTO addUser(CreateUserDTO newuser) {
 		return usuarioDTOConverter.convertToDto(usuarioRepositorio.save(new User(newuser)));
@@ -49,37 +52,39 @@ public class MsUserServiceImpl implements MsUserService {
 
 	@Override
 	public UserDTO updateUser(UserDTO newUserData, String username) {
-		User currentUser = usuarioRepositorio.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+		User currentUser = usuarioRepositorio.findByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException(username));
 
 		if (currentUser != null) {
 			newUserData.setId(currentUser.getId());
-			usuarioRepositorio.save(usuarioDTOConverter.convertToEntity(newUserData));			
+			usuarioRepositorio.save(usuarioDTOConverter.convertToEntity(newUserData));
 			return newUserData;
 		} else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public UserDTO getRandomUserDTO() {
-		RestTemplate restTemplate = new RestTemplate();
-		RamdomUserDTO randomUserDTO = restTemplate.getForObject(
-				"https://randomapi.com/api/198b72ae540f6e93e8e9e61949bd1fee"
-				, RamdomUserDTO.class);
-		return randomUserDTO.getResults().iterator().next();
+		RamdomUserDTO randomUserDTO = restTemplate
+				.getForObject("https://randomapi.com/api/198b72ae540f6e93e8e9e61949bd1fee", RamdomUserDTO.class);
+		if (randomUserDTO != null)
+			return randomUserDTO.getResults().iterator().next();
+		else
+			return null;
 	}
-	
+
 	@Override
-	public List<User> addRandomUsers (Long number) {
+	public List<User> addRandomUsers(Long number) {
 		List<User> result = new ArrayList<>();
 		User randomUser;
-		
-		for (int i=0;i<number;i++) {
+
+		for (int i = 0; i < number; i++) {
 			randomUser = usuarioDTOConverter.convertToEntity(getRandomUserDTO());
 			result.add(randomUser);
 			usuarioRepositorio.save(randomUser);
 		}
-		
+
 		return result;
 	}
 

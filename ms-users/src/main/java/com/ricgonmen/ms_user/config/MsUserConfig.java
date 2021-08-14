@@ -1,4 +1,4 @@
-package com.ricgonmen.ms_user.rest.config;
+package com.ricgonmen.ms_user.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

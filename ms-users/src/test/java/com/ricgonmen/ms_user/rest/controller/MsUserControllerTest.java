@@ -1,13 +1,11 @@
 package com.ricgonmen.ms_user.rest.controller;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.io.IOException;
@@ -15,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -23,25 +20,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
+import com.ricgonmen.ms_user.dto.CreateUserDTO;
+import com.ricgonmen.ms_user.dto.UserDTO;
+import com.ricgonmen.ms_user.model.User.Gender;
 import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
-import com.ricgonmen.ms_user.rest.model.User.Gender;
 import com.ricgonmen.ms_user.service.impl.MsUserServiceImpl;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MsUserController.class)
+@ActiveProfiles("test")
 class MsUserControllerTest {
 
 	@Autowired
@@ -108,7 +104,7 @@ class MsUserControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.ricgonmen.ms_user.rest.controller.MsUserController#nuevousuario(com.ricgonmen.ms_user.rest.dto.CreateUserDTO)}.
+	 * {@link com.ricgonmen.ms_user.rest.controller.MsUserController#nuevousuario(com.ricgonmen.ms_user.dto.CreateUserDTO)}.
 	 */
 	@Test
 	final void testNuevousuario() throws Exception {
@@ -125,7 +121,7 @@ class MsUserControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.ricgonmen.ms_user.rest.controller.MsUserController#editarusuarioPorUsername(com.ricgonmen.ms_user.rest.dto.UserDTO, java.lang.String)}.
+	 * {@link com.ricgonmen.ms_user.rest.controller.MsUserController#editarusuarioPorUsername(com.ricgonmen.ms_user.dto.UserDTO, java.lang.String)}.
 	 */
 	@Test
 	final void testEditarusuarioPorUsernameExistente() throws Exception {
@@ -141,7 +137,7 @@ class MsUserControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link com.ricgonmen.ms_user.rest.controller.MsUserController#editarusuarioPorUsername(com.ricgonmen.ms_user.rest.dto.UserDTO, java.lang.String)}.
+	 * {@link com.ricgonmen.ms_user.rest.controller.MsUserController#editarusuarioPorUsername(com.ricgonmen.ms_user.dto.UserDTO, java.lang.String)}.
 	 */
 	@Test
 	final void testEditarusuarioPorUsernameNoExistente() throws Exception {

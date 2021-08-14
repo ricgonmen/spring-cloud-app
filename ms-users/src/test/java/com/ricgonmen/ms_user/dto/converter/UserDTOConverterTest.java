@@ -1,24 +1,14 @@
-package com.ricgonmen.ms_user.rest.dto.converter;
+package com.ricgonmen.ms_user.dto.converter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.ricgonmen.ms_user.rest.config.MsUserConfig;
-
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
-import com.ricgonmen.ms_user.rest.model.User;
-import com.ricgonmen.ms_user.rest.model.User.Gender;
+import com.ricgonmen.ms_user.dto.UserDTO;
+import com.ricgonmen.ms_user.model.User;
+import com.ricgonmen.ms_user.model.User.Gender;
 
 @SpringBootTest
 class UserDTOConverterTest {

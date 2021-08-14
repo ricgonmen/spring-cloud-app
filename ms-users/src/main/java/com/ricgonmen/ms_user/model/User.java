@@ -13,7 +13,7 @@ https://randomapi.com/api/baxwustz?key=NF82-NELB-0LA0-0CBM
 
 */
 
-package com.ricgonmen.ms_user.rest.model;
+package com.ricgonmen.ms_user.model;
 
 
 import javax.persistence.Column;
@@ -26,7 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
+import com.ricgonmen.ms_user.dto.CreateUserDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,10 +1,10 @@
-package com.ricgonmen.ms_user.rest.dto.converter;
+package com.ricgonmen.ms_user.dto.converter;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
-import com.ricgonmen.ms_user.rest.model.User;
+import com.ricgonmen.ms_user.dto.UserDTO;
+import com.ricgonmen.ms_user.model.User;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,6 +1,6 @@
-package com.ricgonmen.ms_user.rest.dto;
+package com.ricgonmen.ms_user.dto;
 
-import com.ricgonmen.ms_user.rest.model.User.Gender;
+import com.ricgonmen.ms_user.model.User.Gender;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

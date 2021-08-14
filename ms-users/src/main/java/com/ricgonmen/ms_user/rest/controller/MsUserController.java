@@ -36,10 +36,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
+import com.ricgonmen.ms_user.dto.CreateUserDTO;
+import com.ricgonmen.ms_user.dto.UserDTO;
+import com.ricgonmen.ms_user.model.User;
 import com.ricgonmen.ms_user.rest.excepcion.ApiError;
-import com.ricgonmen.ms_user.rest.model.User;
 import com.ricgonmen.ms_user.service.MsUserService;
 
 import io.swagger.annotations.ApiOperation;

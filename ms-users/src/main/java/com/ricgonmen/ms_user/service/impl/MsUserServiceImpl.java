@@ -10,13 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
-import com.ricgonmen.ms_user.rest.dto.RamdomUserDTO;
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
-import com.ricgonmen.ms_user.rest.dto.converter.UserDTOConverter;
+import com.ricgonmen.ms_user.dto.CreateUserDTO;
+import com.ricgonmen.ms_user.dto.RamdomUserDTO;
+import com.ricgonmen.ms_user.dto.UserDTO;
+import com.ricgonmen.ms_user.dto.converter.UserDTOConverter;
+import com.ricgonmen.ms_user.model.User;
+import com.ricgonmen.ms_user.model.UserRepository;
 import com.ricgonmen.ms_user.rest.excepcion.UserNotFoundException;
-import com.ricgonmen.ms_user.rest.model.User;
-import com.ricgonmen.ms_user.rest.model.UserRepository;
 import com.ricgonmen.ms_user.service.MsUserService;
 
 @Service

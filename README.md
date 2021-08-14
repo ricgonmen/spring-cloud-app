@@ -3,7 +3,7 @@
 This toy project focus in show how to use:
 
 * Spring Boot as driver technology for REST API.
-* JPA for data access for persistence APU.
+* JPA for data access for persistence API.
 * The cloud by a proof of concept about the [Spring Cloud Netflix](https://spring.io/projects/spring-cloud-netflix) ecosystem. 
 * Keep all of that automated with Maven
 * Engage together in a sample deployment on a scalable infraestructure (Docker with multiple instances of the service)
@@ -52,7 +52,7 @@ public class User {
 The API published deliver this services:
 
 * /api/user/ (GET): return the list of all users.
-* /api/puser/{page=?&size=?} (GET): return the list of all users (paginatged).
+* /api/puser/{page=?&size=?} (GET): return the list of all users (paginated version).
 * /api/user/{username}/ (GET): return a single user.
 * /api/user/ (POST): create a user.
 * /api/user/{username}/ (PUT): update the information of a single user.

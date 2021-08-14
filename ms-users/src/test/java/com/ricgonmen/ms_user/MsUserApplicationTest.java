@@ -17,7 +17,7 @@ class MsUserApplicationTest {
 	MsUserController msUserController;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		Assertions.assertNotNull(msUserController);
 	}
 }

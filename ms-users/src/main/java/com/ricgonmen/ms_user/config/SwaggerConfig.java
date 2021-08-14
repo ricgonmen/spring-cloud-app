@@ -1,4 +1,4 @@
-package com.ricgonmen.ms_user.rest.config;
+package com.ricgonmen.ms_user.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

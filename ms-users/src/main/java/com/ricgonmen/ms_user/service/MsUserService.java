@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.ricgonmen.ms_user.rest.dto.CreateUserDTO;
-import com.ricgonmen.ms_user.rest.dto.UserDTO;
-import com.ricgonmen.ms_user.rest.model.User;
+import com.ricgonmen.ms_user.dto.CreateUserDTO;
+import com.ricgonmen.ms_user.dto.UserDTO;
+import com.ricgonmen.ms_user.model.User;
 
 
 public interface MsUserService {

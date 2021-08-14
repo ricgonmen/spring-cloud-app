@@ -1,4 +1,4 @@
-package com.ricgonmen.ms_user.rest.model;
+package com.ricgonmen.ms_user.model;
 
 
 import java.util.Optional;
